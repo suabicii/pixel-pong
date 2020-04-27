@@ -25,4 +25,28 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
- 
+
+void __fastcall TForm1::moveUpLeftPaddleTimer(TObject *Sender)
+{
+        moveUp(leftPaddle);        
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::moveDownLeftPaddleTimer(TObject *Sender)
+{
+        moveDown(leftPaddle);        
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+        if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
+        if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+        if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
+        if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
+}
+//---------------------------------------------------------------------------

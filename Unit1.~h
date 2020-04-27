@@ -16,6 +16,7 @@ __published:	// IDE-managed Components
         TImage *background;
         TImage *leftPaddle;
         TImage *rightPaddle;
+        TImage *Image1;
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

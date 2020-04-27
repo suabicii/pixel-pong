@@ -41,6 +41,8 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
+        if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
+        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
@@ -48,6 +50,8 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
+        if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
+        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::moveUpRightPaddleTimer(TObject *Sender)

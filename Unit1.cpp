@@ -64,3 +64,9 @@ void __fastcall TForm1::moveDownRightPaddleTimer(TObject *Sender)
         moveDown(rightPaddle);        
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm1::moveBallTimer(TObject *Sender)
+{
+ ;        
+}
+//---------------------------------------------------------------------------
+

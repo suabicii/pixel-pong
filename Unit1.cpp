@@ -9,6 +9,24 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 
+int x = -8;
+int y = -8;
+
+bool collision(TImage *ball, TImage *paddle)
+{
+    if (ball->Left >= paddle->Left - ball->Width &&
+        ball->Left <= paddle->Left + paddle->Width &&
+        ball->Top >= paddle->Top - ball->Height &&
+        ball->Top <= paddle->Top + paddle->Height)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void moveUp(TImage *paddle)
 {
         if (paddle->Top > 10) paddle->Top -= 10;
@@ -17,6 +35,11 @@ void moveUp(TImage *paddle)
 void moveDown(TImage *paddle)
 {
         if (paddle->Top + paddle->Height < Form1->background->Height - 10) paddle->Top += 10;
+}
+
+void bounceBall(TImage *ball, TImage *paddle)
+{
+        x = -x;
 }
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
@@ -64,3 +87,18 @@ void __fastcall TForm1::moveDownRightPaddleTimer(TObject *Sender)
         moveDown(rightPaddle);        
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm1::moveBallTimer(TObject *Sender)
+{
+        ball->Left += x;
+        ball->Top += y;
+        // odbij od gornej sciany
+        if (ball->Top - 5 <= background->Top) y = -y;
+        // odbij od dolnej sciany
+        if (ball->Top + ball->Height > background->Height - 5) y = -y;
+
+        // odbij pileczke
+        if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
+        if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
+}
+//---------------------------------------------------------------------------
+

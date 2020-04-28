@@ -39,12 +39,7 @@ void moveDown(TImage *paddle)
 
 void bounceBall(TImage *ball, TImage *paddle)
 {
-        if (ball->Left > paddle->Left - paddle->Width / 2 &&
-            ball->Left < paddle->Left + paddle->Width)
-        {
-            x = -x;
-        }
-
+        x = -x;
 }
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
@@ -99,7 +94,7 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         // odbij od gornej sciany
         if (ball->Top - 5 <= background->Top) y = -y;
         // odbij od dolnej sciany
-        if (ball->Top + ball->Height < background->Height - 10) y = -y;
+        if (ball->Top + ball->Height > background->Height - 5) y = -y;
 
         // odbij pileczke
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);

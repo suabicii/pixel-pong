@@ -13,6 +13,7 @@ int x = -8;
 int y = -8;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
+int seconds = 0;
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -48,18 +49,26 @@ void bounceBall(TImage *ball, TImage *paddle)
         }
 }
 
+bool isGameEnded()
+{
+        if (leftPlayerPoints == 6 || rightPlayerPoints == 6) return true;
+        else return false;
+}
+
 void countPoints(TImage *ball)
 {
         if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
         {
-            leftPlayerPoints++;
-            Form1->moveBall->Enabled = false;
-        }
-        if (ball->Left > Form1->rightPaddle->Left + Form1->rightPaddle->Width &&
-            ball->Left + ball->Width > 850)
-        {
             rightPlayerPoints++;
             Form1->moveBall->Enabled = false;
+            if (!isGameEnded()) Form1->pause->Enabled = true;
+        }
+        else if (ball->Left > Form1->rightPaddle->Left + Form1->rightPaddle->Width &&
+            ball->Left + ball->Width > 850)
+        {
+            leftPlayerPoints++;
+            Form1->moveBall->Enabled = false;
+            if (!isGameEnded()) Form1->pause->Enabled = true;
         }
 }
 //---------------------------------------------------------------------------
@@ -124,6 +133,22 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         countPoints(ball);
         leftPlayerResult->Caption = IntToStr(leftPlayerPoints);
         rightPlayerResult->Caption = IntToStr(rightPlayerPoints);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::pauseTimer(TObject *Sender)
+{
+        seconds++;
+        if (seconds == 3)
+        {
+            ball->Left = 600;
+            ball->Top = 380;
+            x = -8;
+            y = -8;
+            moveBall->Enabled = true;
+            seconds = 0;
+            pause->Enabled = false;
+        }
 }
 //---------------------------------------------------------------------------
 

@@ -24,6 +24,7 @@ __published:	// IDE-managed Components
         TTimer *moveBall;
         TLabel *leftPlayerResult;
         TLabel *rightPlayerResult;
+        TTimer *pause;
         void __fastcall moveUpLeftPaddleTimer(TObject *Sender);
         void __fastcall moveDownLeftPaddleTimer(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -33,6 +34,7 @@ __published:	// IDE-managed Components
         void __fastcall moveUpRightPaddleTimer(TObject *Sender);
         void __fastcall moveDownRightPaddleTimer(TObject *Sender);
         void __fastcall moveBallTimer(TObject *Sender);
+        void __fastcall pauseTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

@@ -12,6 +12,21 @@ TForm1 *Form1;
 int x = -8;
 int y = -8;
 
+bool collision(TImage *ball, TImage *paddle)
+{
+    if (ball->Left >= paddle->Left - ball->Width &&
+        ball->Left <= paddle->Left + paddle->Width &&
+        ball->Top >= paddle->Top - ball->Height &&
+        ball->Top <= paddle->Top + paddle->Height)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void moveUp(TImage *paddle)
 {
         if (paddle->Top > 10) paddle->Top -= 10;
@@ -22,21 +37,14 @@ void moveDown(TImage *paddle)
         if (paddle->Top + paddle->Height < Form1->background->Height - 10) paddle->Top += 10;
 }
 
-void bounceBall(TImage *paddle)
+void bounceBall(TImage *ball, TImage *paddle)
 {
-        if (Form1->ball->Left >= paddle->Left + paddle->Width)
-        {
-                ;
-        }
-        else if (Form1->ball->Left > paddle->Left - paddle->Width / 2 && Form1->ball->Left < paddle->Left + paddle->Width)
+        if (ball->Left > paddle->Left - paddle->Width / 2 &&
+            ball->Left < paddle->Left + paddle->Width)
         {
             x = -x;
-            if (Form1->moveUpLeftPaddle->Enabled && Form1->moveUpRightPaddle->Enabled) y = -y;
         }
-        else if (Form1->ball->Top > paddle->Top - paddle->Height && Form1->ball->Top < paddle->Left + paddle->Height)
-        {
-                y = -y;
-        }
+
 }
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
@@ -94,8 +102,8 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         if (ball->Top + ball->Height < background->Height - 10) y = -y;
 
         // odbij pileczke
-        bounceBall(leftPaddle);
-        bounceBall(rightPaddle);
+        if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
+        if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
 }
 //---------------------------------------------------------------------------
 

@@ -11,6 +11,8 @@ TForm1 *Form1;
 
 int x = -8;
 int y = -8;
+int leftPlayerPoints = 0;
+int rightPlayerPoints = 0;
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -40,6 +42,25 @@ void moveDown(TImage *paddle)
 void bounceBall(TImage *ball, TImage *paddle)
 {
         x = -x;
+        if (ball->Left <= paddle->Left - paddle->Width / 2  && ball->Top + ball->Height > paddle->Top)
+        {
+            y = -y;
+        }
+}
+
+void countPoints(TImage *ball)
+{
+        if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
+        {
+            leftPlayerPoints++;
+            Form1->moveBall->Enabled = false;
+        }
+        if (ball->Left > Form1->rightPaddle->Left + Form1->rightPaddle->Width &&
+            ball->Left + ball->Width > 850)
+        {
+            rightPlayerPoints++;
+            Form1->moveBall->Enabled = false;
+        }
 }
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
@@ -99,6 +120,10 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         // odbij pileczke
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
         if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
+
+        countPoints(ball);
+        leftPlayerResult->Caption = IntToStr(leftPlayerPoints);
+        rightPlayerResult->Caption = IntToStr(rightPlayerPoints);
 }
 //---------------------------------------------------------------------------
 

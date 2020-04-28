@@ -22,6 +22,8 @@ __published:	// IDE-managed Components
         TTimer *moveDownRightPaddle;
         TTimer *moveUpRightPaddle;
         TTimer *moveBall;
+        TLabel *leftPlayerResult;
+        TLabel *rightPlayerResult;
         void __fastcall moveUpLeftPaddleTimer(TObject *Sender);
         void __fastcall moveDownLeftPaddleTimer(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

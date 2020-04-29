@@ -81,6 +81,8 @@ AnsiString whoWon()
 void playAgain()
 {
         seconds = 2;
+        leftPlayerPoints = 0;
+        rightPlayerPoints = 0;
         Form1->pause->Enabled = true;
 }
 

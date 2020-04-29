@@ -13,7 +13,7 @@ int x = -8;
 int y = -8;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
-int seconds = 0;
+int seconds = 1;
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -51,7 +51,7 @@ void bounceBall(TImage *ball, TImage *paddle)
 
 bool isGameEnded()
 {
-        if (leftPlayerPoints == 6 && rightPlayerPoints == 6) return true;
+        if (leftPlayerPoints == 6 || rightPlayerPoints == 6) return true;
         else return false;
 }
 

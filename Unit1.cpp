@@ -13,7 +13,7 @@ int x = -8;
 int y = -8;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
-int seconds = 0;
+int seconds = 1;
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -146,7 +146,7 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
             x = -8;
             y = -8;
             moveBall->Enabled = true;
-            seconds = 0;
+            seconds = 1;
             pause->Enabled = false;
         }
 }

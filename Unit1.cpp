@@ -78,14 +78,29 @@ AnsiString whoWon()
         else return "prawy";
 }
 
+void playAgain()
+{
+        seconds = 2;
+        leftPlayerPoints = 0;
+        rightPlayerPoints = 0;
+        Form1->pause->Enabled = true;
+}
+
 void showFullResult()
 {
         if (isGameEnded())
         {
-                MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
+                if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
                         "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
                         + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
-                        TMsgDlgButtons() << mbYes << mbNo, 0);
+                        TMsgDlgButtons() << mbYes << mbNo, 0) == ID_YES)
+                {
+                    playAgain();
+                }
+                else
+                {
+                    Application->Terminate();    
+                }
         }
 }
 //---------------------------------------------------------------------------

@@ -71,6 +71,21 @@ void countPoints(TImage *ball)
             if (!isGameEnded()) Form1->pause->Enabled = true;
         }
 }
+
+AnsiString whoWon()
+{
+        if (leftPlayerPoints > rightPlayerPoints) return "lewy";
+        else return "prawy";
+}
+
+void showFullResult()
+{
+        if (isGameEnded())
+        {
+            ShowMessage("KONIEC GRY! Wygra³ gracz " + whoWon() +
+                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints));
+        }
+}
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
@@ -126,13 +141,14 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         // odbij od dolnej sciany
         if (ball->Top + ball->Height > background->Height - 5) y = -y;
 
-        // odbij pileczke
+        // odbij pileczke od paletki
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
         if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
 
         countPoints(ball);
         leftPlayerResult->Caption = IntToStr(leftPlayerPoints);
         rightPlayerResult->Caption = IntToStr(rightPlayerPoints);
+        showFullResult();
 }
 //---------------------------------------------------------------------------
 

@@ -82,8 +82,11 @@ void showFullResult()
 {
         if (isGameEnded())
         {
-            ShowMessage("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints));
+                MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
+                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints),
+                        mtInformation, TMsgDlgButtons() << mbOK, 0);
+            //ShowMessage("KONIEC GRY! Wygra³ gracz " + whoWon() +
+                        //"\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints));
         }
 }
 //---------------------------------------------------------------------------

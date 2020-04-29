@@ -72,7 +72,7 @@ void countPoints(TImage *ball)
         }
 }
 
-AnsiString whoWon()
+char *whoWon()
 {
         if (leftPlayerPoints > rightPlayerPoints) return "lewy";
         else return "prawy";
@@ -82,11 +82,14 @@ void showFullResult()
 {
         if (isGameEnded())
         {
-                MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints),
-                        mtInformation, TMsgDlgButtons() << mbOK, 0);
-            //ShowMessage("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        //"\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints));
+                char *fullMessage = "Wygra³ gracz" + whoWon() +
+                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
+                        + "\nCzy chcesz zagraæ jeszcze raz?";
+                Application->MessageBoxA(fullMessage, "PotwierdŸ", MB_YESNO);
+                //MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
+                        //"\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
+                        //+ "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
+                        //TMsgDlgButtons() << mbYes << mbNo, 0);
         }
 }
 //---------------------------------------------------------------------------

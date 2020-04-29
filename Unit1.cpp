@@ -83,8 +83,9 @@ void showFullResult()
         if (isGameEnded())
         {
                 MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints),
-                        mtInformation, TMsgDlgButtons() << mbOK, 0);
+                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
+                        + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
+                        TMsgDlgButtons() << mbYes << mbNo, 0);
         }
 }
 //---------------------------------------------------------------------------

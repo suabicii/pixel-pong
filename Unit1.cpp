@@ -13,7 +13,7 @@ int x = -8;
 int y = -8;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
-int seconds = 0;
+int seconds = 1;
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -71,6 +71,38 @@ void countPoints(TImage *ball)
             if (!isGameEnded()) Form1->pause->Enabled = true;
         }
 }
+
+AnsiString whoWon()
+{
+        if (leftPlayerPoints > rightPlayerPoints) return "lewy";
+        else return "prawy";
+}
+
+void playAgain()
+{
+        seconds = 2;
+        leftPlayerPoints = 0;
+        rightPlayerPoints = 0;
+        Form1->pause->Enabled = true;
+}
+
+void showFullResult()
+{
+        if (isGameEnded())
+        {
+                if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
+                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
+                        + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
+                        TMsgDlgButtons() << mbYes << mbNo, 0) == ID_YES)
+                {
+                    playAgain();
+                }
+                else
+                {
+                    Application->Terminate();    
+                }
+        }
+}
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
@@ -126,13 +158,14 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         // odbij od dolnej sciany
         if (ball->Top + ball->Height > background->Height - 5) y = -y;
 
-        // odbij pileczke
+        // odbij pileczke od paletki
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
         if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
 
         countPoints(ball);
         leftPlayerResult->Caption = IntToStr(leftPlayerPoints);
         rightPlayerResult->Caption = IntToStr(rightPlayerPoints);
+        showFullResult();
 }
 //---------------------------------------------------------------------------
 
@@ -146,7 +179,7 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
             x = -8;
             y = -8;
             moveBall->Enabled = true;
-            seconds = 0;
+            seconds = 1;
             pause->Enabled = false;
         }
 }

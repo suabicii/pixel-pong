@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include "mmsystem.h"
 #pragma hdrstop
 
 #include "Unit1.h"
@@ -182,6 +183,20 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
             seconds = 1;
             pause->Enabled = false;
         }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+        MediaPlayer1->FileName = "snd/music1.wav";
+        MediaPlayer1->Open();
+        MediaPlayer1->Play();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+{
+        MediaPlayer1->Close();        
 }
 //---------------------------------------------------------------------------
 

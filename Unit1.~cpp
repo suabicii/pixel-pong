@@ -1,6 +1,9 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <vector.h>
+#include <string>
+#include "mmsystem.h"
 #pragma hdrstop
 
 #include "Unit1.h"
@@ -14,6 +17,18 @@ int y = -8;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
 int seconds = 1;
+vector<string> musicFiles;
+int trackIndex = 1;
+int millisecondsInTrack = 0;
+
+void playTrack(TMediaPlayer *MediaPlayer, AnsiString fileName, TTimer *playlist, TTimer *tracksDuration)
+{
+        MediaPlayer->FileName = fileName;
+        MediaPlayer->Open();
+        MediaPlayer->Play();
+        tracksDuration->Enabled = true;
+        playlist->Enabled = false;
+}
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -45,8 +60,10 @@ void bounceBall(TImage *ball, TImage *paddle)
         x = -x;
         if (ball->Left <= paddle->Left - paddle->Width / 2  && ball->Top + ball->Height > paddle->Top)
         {
-            y = -y;
+            if (y > 0) y = -y;
+            else y += 4;
         }
+        PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
 }
 
 bool isGameEnded()
@@ -60,6 +77,7 @@ void countPoints(TImage *ball)
         if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
         {
             rightPlayerPoints++;
+            PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
             Form1->moveBall->Enabled = false;
             if (!isGameEnded()) Form1->pause->Enabled = true;
         }
@@ -67,6 +85,7 @@ void countPoints(TImage *ball)
             ball->Left + ball->Width > 850)
         {
             leftPlayerPoints++;
+            PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
             Form1->moveBall->Enabled = false;
             if (!isGameEnded()) Form1->pause->Enabled = true;
         }
@@ -81,6 +100,8 @@ AnsiString whoWon()
 void playAgain()
 {
         seconds = 2;
+        leftPlayerPoints = 0;
+        rightPlayerPoints = 0;
         Form1->pause->Enabled = true;
 }
 
@@ -152,9 +173,17 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         ball->Left += x;
         ball->Top += y;
         // odbij od gornej sciany
-        if (ball->Top - 5 <= background->Top) y = -y;
+        if (ball->Top - 5 <= background->Top)
+        {
+            y = -y;
+            PlaySound("snd/fx2.wav", NULL, SND_ASYNC);
+        }
         // odbij od dolnej sciany
-        if (ball->Top + ball->Height > background->Height - 5) y = -y;
+        if (ball->Top + ball->Height > background->Height - 5)
+        {
+            y = -y;
+            PlaySound("snd/fx2.wav", NULL, SND_ASYNC);
+        }
 
         // odbij pileczke od paletki
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
@@ -179,6 +208,62 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
             moveBall->Enabled = true;
             seconds = 1;
             pause->Enabled = false;
+        }
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+{
+        MediaPlayer1->Close();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+        playlist->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::tracksDurationTimer(TObject *Sender)
+{
+        ProgressBar1->Max = MediaPlayer1->Length;
+        ProgressBar1->Position = MediaPlayer1->Position;
+
+        if (ProgressBar1->Position == MediaPlayer1->Length)
+        {
+            MediaPlayer1->Close();
+            tracksDuration->Enabled = false;
+            playlist->Enabled = true;
+            trackIndex++;
+        }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::playlistTimer(TObject *Sender)
+{
+        switch (trackIndex)
+        {
+            case 1:
+                playTrack(MediaPlayer1, "snd/music1.wav", playlist, tracksDuration);
+                break;
+            case 2:
+                playTrack(MediaPlayer1, "snd/music2.wav", playlist, tracksDuration);
+                break;
+            case 3:
+                playTrack(MediaPlayer1, "snd/music3.mp3", playlist, tracksDuration);
+                break;
+            case 4:
+                playTrack(MediaPlayer1, "snd/music4.mp3", playlist, tracksDuration);
+                break;
+            case 5:
+                playTrack(MediaPlayer1, "snd/music5.mp3", playlist, tracksDuration);
+                break;
+            case 6:
+                playTrack(MediaPlayer1, "snd/music6.mp3", playlist, tracksDuration);
+                trackIndex = 1;
+                break;
         }
 }
 //---------------------------------------------------------------------------

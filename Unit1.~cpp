@@ -1,6 +1,8 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <vector.h>
+#include <string>
 #include "mmsystem.h"
 #pragma hdrstop
 
@@ -15,6 +17,18 @@ int y = -8;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
 int seconds = 1;
+vector<string> musicFiles;
+int trackIndex = 1;
+int millisecondsInTrack = 0;
+
+void playTrack(TMediaPlayer *MediaPlayer, AnsiString fileName, TTimer *playlist, TTimer *tracksDuration)
+{
+        MediaPlayer->FileName = fileName;
+        MediaPlayer->Open();
+        MediaPlayer->Play();
+        tracksDuration->Enabled = true;
+        playlist->Enabled = false;
+}
 
 bool collision(TImage *ball, TImage *paddle)
 {
@@ -46,7 +60,7 @@ void bounceBall(TImage *ball, TImage *paddle)
         x = -x;
         if (ball->Left <= paddle->Left - paddle->Width / 2  && ball->Top + ball->Height > paddle->Top)
         {
-            y = -y;
+            if (y > 0) y = -y;
         }
 }
 
@@ -186,16 +200,46 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::FormCreate(TObject *Sender)
-{
-        MediaPlayer1->FileName = "snd/music1.wav";
-        MediaPlayer1->Open();
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
-        MediaPlayer1->Close();        
+        MediaPlayer1->Close();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+        playlist->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::tracksDurationTimer(TObject *Sender)
+{
+        ProgressBar1->Max = MediaPlayer1->Length;
+        ProgressBar1->Position = MediaPlayer1->Position;
+
+        if (ProgressBar1->Position == MediaPlayer1->Length)
+        {
+            MediaPlayer1->Close();
+            tracksDuration->Enabled = false;
+            playlist->Enabled = true;
+            trackIndex++;
+        }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::playlistTimer(TObject *Sender)
+{
+        switch (trackIndex)
+        {
+            case 1:
+                playTrack(MediaPlayer1, "snd/music1.wav", playlist, tracksDuration);
+                break;
+            case 2:
+                playTrack(MediaPlayer1, "snd/music2.wav", playlist, trackDuration);
+                break;
+        }
 }
 //---------------------------------------------------------------------------
 

@@ -62,6 +62,7 @@ void bounceBall(TImage *ball, TImage *paddle)
         {
             if (y > 0) y = -y;
         }
+        PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
 }
 
 bool isGameEnded()
@@ -75,6 +76,7 @@ void countPoints(TImage *ball)
         if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
         {
             rightPlayerPoints++;
+            PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
             Form1->moveBall->Enabled = false;
             if (!isGameEnded()) Form1->pause->Enabled = true;
         }
@@ -82,6 +84,7 @@ void countPoints(TImage *ball)
             ball->Left + ball->Width > 850)
         {
             leftPlayerPoints++;
+            PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
             Form1->moveBall->Enabled = false;
             if (!isGameEnded()) Form1->pause->Enabled = true;
         }
@@ -169,9 +172,17 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         ball->Left += x;
         ball->Top += y;
         // odbij od gornej sciany
-        if (ball->Top - 5 <= background->Top) y = -y;
+        if (ball->Top - 5 <= background->Top)
+        {
+            y = -y;
+            PlaySound("snd/fx2.wav", NULL, SND_ASYNC);
+        }
         // odbij od dolnej sciany
-        if (ball->Top + ball->Height > background->Height - 5) y = -y;
+        if (ball->Top + ball->Height > background->Height - 5)
+        {
+            y = -y;
+            PlaySound("snd/fx2.wav", NULL, SND_ASYNC);
+        }
 
         // odbij pileczke od paletki
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);

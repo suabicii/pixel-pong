@@ -61,6 +61,7 @@ void bounceBall(TImage *ball, TImage *paddle)
         if (ball->Left <= paddle->Left - paddle->Width / 2  && ball->Top + ball->Height > paddle->Top)
         {
             if (y > 0) y = -y;
+            else y -= 4;
         }
         PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
 }

@@ -60,7 +60,11 @@ void bounceBall(TImage *ball, TImage *paddle)
         x = -x;
         if (ball->Left <= paddle->Left - paddle->Width / 2  && ball->Top + ball->Height > paddle->Top)
         {
-            if (y > 0) y = -y;
+            if (y > 0)
+            {
+                y += 4;
+                y = -y;
+            }
             else y -= 4;
         }
         PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
@@ -122,6 +126,12 @@ void showFullResult()
                 }
         }
 }
+
+void AIactivity(TImage *ball, TImage *paddle)
+{
+        if (ball->Top + ball->Height < paddle->Top + paddle->Height) moveUp(paddle);
+        else moveDown(paddle);
+}
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
@@ -145,8 +155,8 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
-        if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
-        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
+        //if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
+        //if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
@@ -154,8 +164,8 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
-        if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
-        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
+        //if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
+        //if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::moveUpRightPaddleTimer(TObject *Sender)
@@ -265,6 +275,12 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
                 trackIndex = 1;
                 break;
         }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::AITimer(TObject *Sender)
+{
+        AIactivity(ball, rightPaddle);        
 }
 //---------------------------------------------------------------------------
 

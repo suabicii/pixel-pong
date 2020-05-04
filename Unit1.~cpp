@@ -355,7 +355,7 @@ void __fastcall TForm1::singlePlayerModeClick(TObject *Sender)
 
 void __fastcall TForm1::multiPlayerModeClick(TObject *Sender)
 {
-        secondPlayerEnabled = true;
+        if (!secondPlayerEnabled) secondPlayerEnabled = true;
         startGame();
 }
 //---------------------------------------------------------------------------

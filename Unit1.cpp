@@ -94,22 +94,25 @@ bool isGameEnded()
         else return false;
 }
 
+void playSoundAfterScoring()
+{
+        PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
+        Form1->moveBall->Enabled = false;
+        if (!isGameEnded()) Form1->pause->Enabled = true;
+}
+
 void countPoints(TImage *ball)
 {
         if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
         {
             rightPlayerPoints++;
-            PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
-            Form1->moveBall->Enabled = false;
-            if (!isGameEnded()) Form1->pause->Enabled = true;
+            playSoundAfterScoring();
         }
         else if (ball->Left > Form1->rightPaddle->Left + Form1->rightPaddle->Width &&
             ball->Left + ball->Width > 850)
         {
             leftPlayerPoints++;
-            PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
-            Form1->moveBall->Enabled = false;
-            if (!isGameEnded()) Form1->pause->Enabled = true;
+            playSoundAfterScoring();
         }
 }
 

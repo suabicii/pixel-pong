@@ -30,7 +30,7 @@ void playTrack(TMediaPlayer *MediaPlayer, AnsiString fileName, TTimer *playlist,
 
 bool collision(TImage *ball, TImage *paddle)
 {
-    if (ball->Left >= paddle->Left - paddle->Width &&
+    if (ball->Left >= paddle->Left - ball->Width &&
         ball->Left <= paddle->Left + paddle->Width &&
         ball->Top >= paddle->Top - ball->Height &&
         ball->Top <= paddle->Top + paddle->Height)
@@ -55,9 +55,10 @@ void moveDown(TImage *paddle)
 
 void bounceBall(TImage *ball, TImage *paddle)
 {
+
         x = -x;
-        if (y > 0) y = -y;
-        else y -= 4;
+        if (ball->Left <= paddle->Height / 2) y -=4;
+        else y +=4;
         PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
 }
 

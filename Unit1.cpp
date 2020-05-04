@@ -19,6 +19,14 @@ int rightPlayerPoints = 0;
 int seconds = 1;
 int trackIndex = 1;
 
+void setInitialPositionsOfPaddles()
+{
+        Form1->leftPaddle->Top = 232;
+        Form1->leftPaddle->Left = 24;
+        Form1->rightPaddle->Top = 232;
+        Form1->rightPaddle->Left = 744;
+}
+
 void playTrack(TMediaPlayer *MediaPlayer, AnsiString fileName, TTimer *playlist, TTimer *tracksDuration)
 {
         MediaPlayer->FileName = fileName;
@@ -98,6 +106,11 @@ void playAgain()
         seconds = 2;
         leftPlayerPoints = 0;
         rightPlayerPoints = 0;
+        setInitialPositionsOfPaddles();
+        Form1->moveUpLeftPaddle->Enabled = false;
+        Form1->moveDownLeftPaddle->Enabled = false;
+        Form1->moveUpRightPaddle->Enabled = false;
+        Form1->moveDownRightPaddle->Enabled = false;
         Form1->pause->Enabled = true;
 }
 
@@ -147,8 +160,8 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
-        //if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
-        //if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
+        if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
+        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
@@ -156,8 +169,8 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
-        //if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
-        //if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
+        if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
+        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::moveUpRightPaddleTimer(TObject *Sender)
@@ -225,6 +238,7 @@ void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TForm1::FormCreate(TObject *Sender)
 {
         playlist->Enabled = true;
+        AI->Enabled = false;
 }
 //---------------------------------------------------------------------------
 
@@ -272,7 +286,7 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
 
 void __fastcall TForm1::AITimer(TObject *Sender)
 {
-        AIactivity(ball, rightPaddle);        
+        AIactivity(ball, rightPaddle);
 }
 //---------------------------------------------------------------------------
 

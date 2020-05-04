@@ -101,6 +101,27 @@ AnsiString whoWon()
         else return "prawy";
 }
 
+void randomizeBallPosition(TImage *ball)
+{
+        int position = 0;
+        randomize();
+        position = random(2);
+
+        if (position == 0)
+        {
+            ball->Left = 600;
+            ball->Top = 380;
+            x = -8;
+        }
+        else
+        {
+            ball->Left = 160;
+            ball->Top = 440;
+            x = 8;
+        }
+        y = -8;
+}
+
 void playAgain()
 {
         seconds = 2;
@@ -161,7 +182,7 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
         if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
-        //if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
+        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
@@ -216,10 +237,7 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
         seconds++;
         if (seconds == 3)
         {
-            ball->Left = 600;
-            ball->Top = 380;
-            x = -8;
-            y = -8;
+            randomizeBallPosition(ball);
             moveBall->Enabled = true;
             seconds = 1;
             pause->Enabled = false;

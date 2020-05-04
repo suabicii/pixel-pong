@@ -12,8 +12,8 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 
-int x = -8;
-int y = -8;
+int x = 0;
+int y = 0;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
 int seconds = 1;
@@ -99,6 +99,27 @@ AnsiString whoWon()
 {
         if (leftPlayerPoints > rightPlayerPoints) return "lewy";
         else return "prawy";
+}
+
+void randomizeBallPosition(TImage *ball)
+{
+        int position = 0;
+        randomize();
+        position = random(2);
+
+        if (position == 0)
+        {
+            ball->Left = 600;
+            ball->Top = 380;
+            x = -8;
+        }
+        else
+        {
+            ball->Left = 160;
+            ball->Top = 440;
+            x = 8;
+        }
+        y = -8;
 }
 
 void playAgain()
@@ -216,10 +237,7 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
         seconds++;
         if (seconds == 3)
         {
-            ball->Left = 600;
-            ball->Top = 380;
-            x = -8;
-            y = -8;
+            randomizeBallPosition(ball);
             moveBall->Enabled = true;
             seconds = 1;
             pause->Enabled = false;
@@ -239,6 +257,7 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
 {
         playlist->Enabled = true;
         AI->Enabled = false;
+        randomizeBallPosition(ball);
 }
 //---------------------------------------------------------------------------
 

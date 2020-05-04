@@ -32,6 +32,8 @@ __published:	// IDE-managed Components
         TProgressBar *ProgressBar1;
         TTimer *playlist;
         TTimer *AI;
+        TButton *singlePlayerMode;
+        TButton *multiPlayerMode;
         void __fastcall moveUpLeftPaddleTimer(TObject *Sender);
         void __fastcall moveDownLeftPaddleTimer(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -47,6 +49,8 @@ __published:	// IDE-managed Components
         void __fastcall tracksDurationTimer(TObject *Sender);
         void __fastcall playlistTimer(TObject *Sender);
         void __fastcall AITimer(TObject *Sender);
+        void __fastcall singlePlayerModeClick(TObject *Sender);
+        void __fastcall multiPlayerModeClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

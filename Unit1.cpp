@@ -19,6 +19,19 @@ int rightPlayerPoints = 0;
 int seconds = 1;
 int trackIndex = 1;
 
+bool secondPlayerEnabled = false;
+bool isGameStarted = false;
+
+void startGame()
+{
+        Form1->singlePlayerMode->Enabled = false;
+        Form1->singlePlayerMode->Visible = false;
+        Form1->multiPlayerMode->Enabled = false;
+        Form1->multiPlayerMode->Visible = false;
+        Form1->moveBall->Enabled = true;
+        isGameStarted = true;
+}
+
 void setInitialPositionsOfPaddles()
 {
         Form1->leftPaddle->Top = 232;
@@ -72,7 +85,12 @@ void bounceBall(TImage *ball, TImage *paddle)
 
 bool isGameEnded()
 {
-        if (leftPlayerPoints == 6 || rightPlayerPoints == 6) return true;
+        if (leftPlayerPoints == 6 || rightPlayerPoints == 6)
+        {
+            isGameStarted = false;
+            if (Form1->AI->Enabled) Form1->AI->Enabled = false;
+            return true;
+        }
         else return false;
 }
 
@@ -132,7 +150,11 @@ void playAgain()
         Form1->moveDownLeftPaddle->Enabled = false;
         Form1->moveUpRightPaddle->Enabled = false;
         Form1->moveDownRightPaddle->Enabled = false;
-        Form1->pause->Enabled = true;
+        Form1->singlePlayerMode->Enabled = true;
+        Form1->singlePlayerMode->Visible = true;
+        Form1->multiPlayerMode->Enabled = true;
+        Form1->multiPlayerMode->Visible = true;
+        randomizeBallPosition(Form1->ball);
 }
 
 void showFullResult()
@@ -181,8 +203,12 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
-        if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
-        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
+
+        if (secondPlayerEnabled)
+        {
+            if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
+            if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
+        }
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
@@ -190,8 +216,12 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
 {
         if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
         if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
-        if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
-        if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
+
+        if (secondPlayerEnabled)
+        {
+            if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
+            if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
+        }
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::moveUpRightPaddleTimer(TObject *Sender)
@@ -237,10 +267,15 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
         seconds++;
         if (seconds == 3)
         {
-            randomizeBallPosition(ball);
-            moveBall->Enabled = true;
-            seconds = 1;
-            pause->Enabled = false;
+            if (isGameStarted)
+            {
+                randomizeBallPosition(ball);
+                moveBall->Enabled = true;
+                seconds = 1;
+                pause->Enabled = false;
+            }
+            else
+                seconds = 2;
         }
 }
 //---------------------------------------------------------------------------
@@ -306,6 +341,22 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
 void __fastcall TForm1::AITimer(TObject *Sender)
 {
         AIactivity(ball, rightPaddle);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::singlePlayerModeClick(TObject *Sender)
+{
+        AI->Enabled = true;
+        if (secondPlayerEnabled) secondPlayerEnabled = false;
+        startGame();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::multiPlayerModeClick(TObject *Sender)
+{
+        if (!secondPlayerEnabled) secondPlayerEnabled = true;
+        startGame();
 }
 //---------------------------------------------------------------------------
 

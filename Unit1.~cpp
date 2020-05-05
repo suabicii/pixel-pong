@@ -113,6 +113,10 @@ void endGame()
         if (Form1->AI->Enabled) Form1->AI->Enabled = false;
         if (leftPlayerEnabled) leftPlayerEnabled = false;
         if (rightPlayerEnabled) rightPlayerEnabled = false;
+        Form1->moveUpLeftPaddle->Enabled = false;
+        Form1->moveDownLeftPaddle->Enabled = false;
+        Form1->moveUpRightPaddle->Enabled = false;
+        Form1->moveDownRightPaddle->Enabled = false;
         setInitialPositionsOfPaddles();
 }
 
@@ -340,7 +344,12 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
 
 void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
-        MediaPlayer1->Close();
+        if (Application->MessageBox(
+        "Czy na pewno chcesz wyjœæ z gry?", "PotwierdŸ",
+        MB_YESNO | MB_ICONQUESTION) == IDNO)
+        {
+            Action = caNone;
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -443,4 +452,19 @@ void __fastcall TForm1::rightChoiceClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TForm1::FormKeyPress(TObject *Sender, char &Key)
+{
+        // nie wiem dlaczego to nie dziala :(
+        if (Key == VK_ESCAPE)
+        {
+            if (Application->MessageBox(
+                "Czy na pewno chcesz wyjœæ z gry?", "PotwierdŸ",
+              MB_YESNO | MB_ICONQUESTION) == IDYES)
+           {
+               Application->Terminate();
+           }
+        }
+}
+//---------------------------------------------------------------------------
 

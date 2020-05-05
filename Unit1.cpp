@@ -344,7 +344,15 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
 
 void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
-        MediaPlayer1->Close();
+        moveBall->Enabled = false;
+
+        if (Application->MessageBox(
+        "Czy na pewno chcesz wyjœæ z gry?", "PotwierdŸ",
+        MB_YESNO | MB_ICONQUESTION) == IDNO)
+        {
+            moveBall->Enabled = true;
+            Action = caNone;
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -447,4 +455,19 @@ void __fastcall TForm1::rightChoiceClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TForm1::FormKeyPress(TObject *Sender, char &Key)
+{
+        // nie wiem dlaczego to nie dziala :(
+        if (Key == VK_ESCAPE)
+        {
+            if (Application->MessageBox(
+                "Czy na pewno chcesz wyjœæ z gry?", "PotwierdŸ",
+              MB_YESNO | MB_ICONQUESTION) == IDYES)
+           {
+               Application->Terminate();
+           }
+        }
+}
+//---------------------------------------------------------------------------
 

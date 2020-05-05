@@ -58,6 +58,7 @@ __published:	// IDE-managed Components
         void __fastcall multiPlayerModeClick(TObject *Sender);
         void __fastcall leftChoiceClick(TObject *Sender);
         void __fastcall rightChoiceClick(TObject *Sender);
+        void __fastcall FormKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

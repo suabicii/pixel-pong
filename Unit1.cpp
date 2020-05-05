@@ -95,6 +95,11 @@ void bounceBall(TImage *ball, TImage *paddle)
         x = -x;
         if (ball->Left <= paddle->Height / 2) y -=4;
         else y += 4;
+        if (y >= 100 || y <= -100)
+        {
+                if (ball->Left >= paddle->Width) ball->Left += 100;
+                else ball->Left -= 100;
+        }
         PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
 }
 
@@ -278,6 +283,9 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         // odbij pileczke od paletki
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
         if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
+
+        Label1->Caption = "x = " + IntToStr(x);
+        Label2->Caption = "y = " + IntToStr(y);
 
         countPoints(ball);
         leftPlayerResult->Caption = IntToStr(leftPlayerPoints);

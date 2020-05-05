@@ -38,6 +38,7 @@ __published:	// IDE-managed Components
         TButton *rightChoice;
         TLabel *choiceInfo;
         TLabel *Label1;
+        TLabel *Label2;
         void __fastcall moveUpLeftPaddleTimer(TObject *Sender);
         void __fastcall moveDownLeftPaddleTimer(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

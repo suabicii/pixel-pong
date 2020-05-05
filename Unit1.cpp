@@ -345,16 +345,16 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
                 playTrack(MediaPlayer1, "snd/music2.wav", playlist, tracksDuration);
                 break;
             case 3:
-                playTrack(MediaPlayer1, "snd/music3.mp3", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music3.wav", playlist, tracksDuration);
                 break;
             case 4:
-                playTrack(MediaPlayer1, "snd/music4.mp3", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music4.wav", playlist, tracksDuration);
                 break;
             case 5:
-                playTrack(MediaPlayer1, "snd/music5.mp3", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music5.wav", playlist, tracksDuration);
                 break;
             case 6:
-                playTrack(MediaPlayer1, "snd/music6.mp3", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music6.wav", playlist, tracksDuration);
                 trackIndex = 1;
                 break;
         }

@@ -38,12 +38,13 @@ void disableMainMenuButtons()
         Form1->multiPlayerMode->Visible = false;
 }
 
-void disableChoiceButtons()
+void disableChoiceButtonsAndInfo()
 {
         Form1->leftChoice->Enabled = false;
         Form1->leftChoice->Visible = false;
         Form1->rightChoice->Enabled = false;
         Form1->rightChoice->Visible = false;
+        Form1->choiceInfo->Visible = false;
 }
 
 void setInitialPositionsOfPaddles()
@@ -392,8 +393,7 @@ void __fastcall TForm1::leftChoiceClick(TObject *Sender)
 {
         leftPlayerEnabled = true;
         if (rightPlayerEnabled) rightPlayerEnabled = false;
-        disableChoiceButtons();
-        choiceInfo->Visible = false;
+        disableChoiceButtonsAndInfo();
         AI->Enabled = true;
         startGame();
 }
@@ -403,8 +403,7 @@ void __fastcall TForm1::rightChoiceClick(TObject *Sender)
 {
         rightPlayerEnabled = true;
         if (leftPlayerEnabled) leftPlayerEnabled = false;
-        disableChoiceButtons();
-        choiceInfo->Visible = false;
+        disableChoiceButtonsAndInfo();
         AI->Enabled = true;
         startGame();
 }

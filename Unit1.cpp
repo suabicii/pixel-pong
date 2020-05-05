@@ -18,18 +18,33 @@ int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
 int seconds = 1;
 int trackIndex = 1;
+const int POSITION_IN_X_AXIS_OUT_OF_TABLE = 850;
 
-bool secondPlayerEnabled = false;
+bool leftPlayerEnabled = false;
+bool rightPlayerEnabled = false;
 bool isGameStarted = false;
 
 void startGame()
+{
+        Form1->moveBall->Enabled = true;
+        isGameStarted = true;
+}
+
+void disableMainMenuButtons()
 {
         Form1->singlePlayerMode->Enabled = false;
         Form1->singlePlayerMode->Visible = false;
         Form1->multiPlayerMode->Enabled = false;
         Form1->multiPlayerMode->Visible = false;
-        Form1->moveBall->Enabled = true;
-        isGameStarted = true;
+}
+
+void disableChoiceButtonsAndInfo()
+{
+        Form1->leftChoice->Enabled = false;
+        Form1->leftChoice->Visible = false;
+        Form1->rightChoice->Enabled = false;
+        Form1->rightChoice->Visible = false;
+        Form1->choiceInfo->Visible = false;
 }
 
 void setInitialPositionsOfPaddles()
@@ -94,7 +109,7 @@ bool isGameEnded()
         else return false;
 }
 
-void playSoundAfterScoring()
+void pauseBallAfterScoring()
 {
         PlaySound("snd/fx3.wav", NULL, SND_ASYNC);
         Form1->moveBall->Enabled = false;
@@ -106,13 +121,13 @@ void countPoints(TImage *ball)
         if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
         {
             rightPlayerPoints++;
-            playSoundAfterScoring();
+            pauseBallAfterScoring();
         }
         else if (ball->Left > Form1->rightPaddle->Left + Form1->rightPaddle->Width &&
-            ball->Left + ball->Width > 850)
+            ball->Left + ball->Width > POSITION_IN_X_AXIS_OUT_OF_TABLE)
         {
             leftPlayerPoints++;
-            playSoundAfterScoring();
+            pauseBallAfterScoring();
         }
 }
 
@@ -204,10 +219,13 @@ void __fastcall TForm1::moveDownLeftPaddleTimer(TObject *Sender)
 void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-        if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
-        if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
+        if(leftPlayerEnabled)
+        {
+            if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = true;
+            if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = true;
+        }
 
-        if (secondPlayerEnabled)
+        if (rightPlayerEnabled)
         {
             if (Key == VK_UP) moveUpRightPaddle->Enabled = true;
             if (Key == VK_DOWN) moveDownRightPaddle->Enabled = true;
@@ -217,10 +235,13 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-        if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
-        if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
+        if (leftPlayerEnabled)
+        {
+            if (Key == 'w' || Key == 'W') moveUpLeftPaddle->Enabled = false;
+            if (Key == 's' || Key == 'S') moveDownLeftPaddle->Enabled = false;
+        }
 
-        if (secondPlayerEnabled)
+        if (rightPlayerEnabled)
         {
             if (Key == VK_UP) moveUpRightPaddle->Enabled = false;
             if (Key == VK_DOWN) moveDownRightPaddle->Enabled = false;
@@ -294,7 +315,6 @@ void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TForm1::FormCreate(TObject *Sender)
 {
         playlist->Enabled = true;
-        AI->Enabled = false;
         randomizeBallPosition(ball);
 }
 //---------------------------------------------------------------------------
@@ -343,23 +363,50 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
 
 void __fastcall TForm1::AITimer(TObject *Sender)
 {
-        AIactivity(ball, rightPaddle);
+        if (!leftPlayerEnabled) AIactivity(ball, leftPaddle);
+        else if (!rightPlayerEnabled) AIactivity(ball, rightPaddle);
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TForm1::singlePlayerModeClick(TObject *Sender)
 {
-        AI->Enabled = true;
-        if (secondPlayerEnabled) secondPlayerEnabled = false;
-        startGame();
+        leftChoice->Enabled = true;
+        leftChoice->Visible = true;
+        rightChoice->Enabled = true;
+        rightChoice->Visible = true;
+        choiceInfo->Visible = true;
+        disableMainMenuButtons();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::multiPlayerModeClick(TObject *Sender)
 {
-        if (!secondPlayerEnabled) secondPlayerEnabled = true;
+        if (!leftPlayerEnabled) leftPlayerEnabled = true;
+        if (!rightPlayerEnabled) rightPlayerEnabled = true;
+        disableMainMenuButtons();
         startGame();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TForm1::leftChoiceClick(TObject *Sender)
+{
+        leftPlayerEnabled = true;
+        if (rightPlayerEnabled) rightPlayerEnabled = false;
+        disableChoiceButtonsAndInfo();
+        AI->Enabled = true;
+        startGame();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::rightChoiceClick(TObject *Sender)
+{
+        rightPlayerEnabled = true;
+        if (leftPlayerEnabled) leftPlayerEnabled = false;
+        disableChoiceButtonsAndInfo();
+        AI->Enabled = true;
+        startGame();
+}
+//---------------------------------------------------------------------------
+
 

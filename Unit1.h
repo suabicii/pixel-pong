@@ -34,6 +34,9 @@ __published:	// IDE-managed Components
         TTimer *AI;
         TButton *singlePlayerMode;
         TButton *multiPlayerMode;
+        TButton *leftChoice;
+        TButton *rightChoice;
+        TLabel *choiceInfo;
         void __fastcall moveUpLeftPaddleTimer(TObject *Sender);
         void __fastcall moveDownLeftPaddleTimer(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -51,6 +54,8 @@ __published:	// IDE-managed Components
         void __fastcall AITimer(TObject *Sender);
         void __fastcall singlePlayerModeClick(TObject *Sender);
         void __fastcall multiPlayerModeClick(TObject *Sender);
+        void __fastcall leftChoiceClick(TObject *Sender);
+        void __fastcall rightChoiceClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

@@ -93,10 +93,11 @@ void bounceBall(TImage *ball, TImage *paddle)
 {
 
         x = -x;
-        if (ball->Left <= paddle->Height / 2) y -=4;
-        else y += 4;
+        if (ball->Top <= paddle->Height / 2) y -=2;
+        else y += 2;
         if (y >= 100 || y <= -100)
         {
+                //wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
                 if (ball->Left >= paddle->Width) ball->Left += 100;
                 else ball->Left -= 100;
         }
@@ -108,7 +109,10 @@ bool isGameEnded()
         if (leftPlayerPoints == 6 || rightPlayerPoints == 6)
         {
             isGameStarted = false;
+            setInitialPositionsOfPaddles();
             if (Form1->AI->Enabled) Form1->AI->Enabled = false;
+            if (leftPlayerEnabled) leftPlayerEnabled = false;
+            if (rightPlayerEnabled) rightPlayerEnabled = false;
             return true;
         }
         else return false;
@@ -165,14 +169,9 @@ void randomizeBallPosition(TImage *ball)
 
 void playAgain()
 {
-        seconds = 2;
+        seconds = 1;
         leftPlayerPoints = 0;
         rightPlayerPoints = 0;
-        setInitialPositionsOfPaddles();
-        Form1->moveUpLeftPaddle->Enabled = false;
-        Form1->moveDownLeftPaddle->Enabled = false;
-        Form1->moveUpRightPaddle->Enabled = false;
-        Form1->moveDownRightPaddle->Enabled = false;
         Form1->singlePlayerMode->Enabled = true;
         Form1->singlePlayerMode->Visible = true;
         Form1->multiPlayerMode->Enabled = true;

@@ -23,6 +23,7 @@ const int POSITION_IN_X_AXIS_OUT_OF_TABLE = 850;
 bool leftPlayerEnabled = false;
 bool rightPlayerEnabled = false;
 bool isGameStarted = false;
+bool advantageGameEnabled = false;
 
 void startGame()
 {
@@ -97,25 +98,48 @@ void bounceBall(TImage *ball, TImage *paddle)
         else y += 2;
         if (y >= 100 || y <= -100)
         {
-                //wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
+                // wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
+                // tzn. gdy gracz przydusi pileczke do gornej lub
+                // dolnej sciany
                 if (ball->Left >= paddle->Width) ball->Left += 100;
                 else ball->Left -= 100;
         }
         PlaySound("snd/fx1.wav", NULL, SND_ASYNC);
 }
 
+void endGame()
+{
+        isGameStarted = false;
+        if (Form1->AI->Enabled) Form1->AI->Enabled = false;
+        if (leftPlayerEnabled) leftPlayerEnabled = false;
+        if (rightPlayerEnabled) rightPlayerEnabled = false;
+        Form1->moveUpLeftPaddle->Enabled = false;
+        Form1->moveDownLeftPaddle->Enabled = false;
+        Form1->moveUpRightPaddle->Enabled = false;
+        Form1->moveDownRightPaddle->Enabled = false;
+        setInitialPositionsOfPaddles();
+}
+
 bool isGameEnded()
 {
-        if (leftPlayerPoints == 6 || rightPlayerPoints == 6)
+        if (!advantageGameEnabled)
         {
-            isGameStarted = false;
-            setInitialPositionsOfPaddles();
-            if (Form1->AI->Enabled) Form1->AI->Enabled = false;
-            if (leftPlayerEnabled) leftPlayerEnabled = false;
-            if (rightPlayerEnabled) rightPlayerEnabled = false;
-            return true;
+            if (leftPlayerPoints == 6 || rightPlayerPoints == 6)
+            {
+                endGame();
+                return true;
+            }
         }
-        else return false;
+        else
+        {
+            if (leftPlayerPoints - rightPlayerPoints == 2 ||
+                rightPlayerPoints - leftPlayerPoints == 2)
+            {
+                endGame();
+                return true;
+            }
+        }
+        return false;
 }
 
 void pauseBallAfterScoring()
@@ -127,7 +151,8 @@ void pauseBallAfterScoring()
 
 void countPoints(TImage *ball)
 {
-        if (ball->Left < Form1->leftPaddle->Left && ball->Left + ball->Width < Form1->background->Left)
+        if (ball->Left < Form1->leftPaddle->Left &&
+            ball->Left + ball->Width < Form1->background->Left)
         {
             rightPlayerPoints++;
             pauseBallAfterScoring();
@@ -138,6 +163,9 @@ void countPoints(TImage *ball)
             leftPlayerPoints++;
             pauseBallAfterScoring();
         }
+
+        if (leftPlayerPoints == 5 && rightPlayerPoints == 5 &&
+            leftPlayerPoints == rightPlayerPoints) advantageGameEnabled = true;
 }
 
 AnsiString whoWon()
@@ -183,6 +211,8 @@ void showFullResult()
 {
         if (isGameEnded())
         {
+                if (advantageGameEnabled) advantageGameEnabled = false;
+
                 if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
                         "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
                         + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
@@ -355,6 +385,7 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
                 playTrack(MediaPlayer1, "snd/music3.wav", playlist, tracksDuration);
                 break;
             case 4:
+                // moj utwor w wersji 8bit :), a dokladniej: Suabicii - Humans :)
                 playTrack(MediaPlayer1, "snd/music4.wav", playlist, tracksDuration);
                 break;
             case 5:

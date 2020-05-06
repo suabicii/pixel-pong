@@ -344,12 +344,14 @@ void __fastcall TForm1::pauseTimer(TObject *Sender)
 
 void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
+        isGameStarted = false;
         moveBall->Enabled = false;
 
         if (Application->MessageBox(
         "Czy na pewno chcesz wyjœæ z gry?", "PotwierdŸ",
         MB_YESNO | MB_ICONQUESTION) == IDNO)
         {
+            isGameStarted = true;
             moveBall->Enabled = true;
             Action = caNone;
         }

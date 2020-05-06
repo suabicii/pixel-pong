@@ -363,6 +363,20 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
 {
         playlist->Enabled = true;
         randomizeBallPosition(ball);
+        ShowMessage("Witam w grze Pixel Pong!" + AnsiString("\n\n") +
+                    "Gra wzorowana jest na grze Pong firmy Atari z 1972 roku." + AnsiString("\n\n") +
+                    "Sterowanie: " + AnsiString("\n") +
+                    "Gracz lewy: klawisze W, S" + AnsiString("\n") +
+                    "Gracz prawy: strza³ka w górê, strza³ka w dó³" + AnsiString("\n\n") +
+                    "Gra koñczy siê, po uzyskaniu 6 punktów przez jednego z graczy " +
+                    "z wyj¹tkiem sytuacji, w której obaj gracze zdobêd¹ po 5 punktów." + AnsiString("\n") +
+                    "Wtedy aby wygraæ, nale¿y uzyskaæ prewagê 2-punktow¹" + AnsiString("\n\n") +
+                    "Uwaga! Postaraj siê nie odbijaæ pi³eczki górn¹ lub doln¹ œcian¹" +
+                    " paletki, gdy¿ mo¿e to poskuktowaæ utrat¹ punktu." + AnsiString("\n") +
+                    "Chyba, ¿e zrobisz to w odpowiedni sposób, wówczas mo¿esz przyspieszyæ" +
+                    " lub spowolniæ ruch pi³ki" + AnsiString("\n\n") +
+                    "Mi³ej zabawy ¿yczy" + AnsiString("\n") +
+                    "DJ Suabicii :)");
 }
 //---------------------------------------------------------------------------
 

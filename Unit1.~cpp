@@ -95,8 +95,8 @@ void bounceBall(TImage *ball, TImage *paddle)
 
         x = -x;
         if (ball->Top <= paddle->Height / 2) y -=2;
-        else y += 2;
-        if (y >= 100 || y <= -100)
+        else y += 4;
+        if (y >= 50 || y <= -50)
         {
                 // wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
                 // tzn. gdy gracz przydusi pileczke do gornej lub
@@ -213,8 +213,7 @@ void showFullResult()
         {
                 if (advantageGameEnabled) advantageGameEnabled = false;
 
-                if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
+                if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon()
                         + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
                         TMsgDlgButtons() << mbYes << mbNo, 0) == ID_YES)
                 {
@@ -385,6 +384,7 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
 {
         switch (trackIndex)
         {
+            // pliki mp3 zawieszaja gre :(, dlatego uzylem formatu wav
             case 1:
                 playTrack(MediaPlayer1, "snd/music1.wav", playlist, tracksDuration);
                 break;

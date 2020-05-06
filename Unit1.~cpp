@@ -386,23 +386,23 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
         switch (trackIndex)
         {
             case 1:
-                playTrack(MediaPlayer1, "snd/music1.ogg", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music1.wav", playlist, tracksDuration);
                 break;
             case 2:
-                playTrack(MediaPlayer1, "snd/music2.ogg", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music2.wav", playlist, tracksDuration);
                 break;
             case 3:
-                playTrack(MediaPlayer1, "snd/music3.ogg", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music3.wav", playlist, tracksDuration);
                 break;
             case 4:
                 // moj utwor w wersji 8bit :), a dokladniej: Suabicii - Humans :)
-                playTrack(MediaPlayer1, "snd/music4.ogg", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music4.wav", playlist, tracksDuration);
                 break;
             case 5:
-                playTrack(MediaPlayer1, "snd/music5.ogg", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music5.wav", playlist, tracksDuration);
                 break;
             case 6:
-                playTrack(MediaPlayer1, "snd/music6.ogg", playlist, tracksDuration);
+                playTrack(MediaPlayer1, "snd/music6.wav", playlist, tracksDuration);
                 trackIndex = 1;
                 break;
         }

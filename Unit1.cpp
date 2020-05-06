@@ -385,6 +385,7 @@ void __fastcall TForm1::playlistTimer(TObject *Sender)
 {
         switch (trackIndex)
         {
+            // pliki mp3 zawieszaja gre :(, dlatego uzylem formatu wav
             case 1:
                 playTrack(MediaPlayer1, "snd/music1.wav", playlist, tracksDuration);
                 break;

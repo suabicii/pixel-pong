@@ -101,7 +101,6 @@ void bounceBall(TImage *ball, TImage *paddle, TImage *background)
                 // wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
                 // tzn. gdy gracz przydusi pileczke do gornej lub
                 // dolnej sciany
-                // lub pileczka zacznie sie toczyc po dolnej lub gornej scianie
                 if (ball->Left >= paddle->Width) ball->Left += 100;
                 else ball->Left -= 100;
         }

@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="PixelPong.exe"/>
+    <PROJECT value="Project1.exe"/>
     <OBJFILES value="Project1.obj Unit1.obj"/>
     <RESFILES value="Project1.res"/>
     <DEFFILE value=""/>

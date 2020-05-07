@@ -313,7 +313,7 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle, background);
         if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle, background);
 
-        //
+        // na pozniej, dla przyszlego debugowania
         Label1->Caption = "x = " + IntToStr(x);
         Label2->Caption = "y = " + IntToStr(y);
 

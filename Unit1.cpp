@@ -90,17 +90,18 @@ void moveDown(TImage *paddle)
         if (paddle->Top + paddle->Height < Form1->background->Height - 10) paddle->Top += 10;
 }
 
-void bounceBall(TImage *ball, TImage *paddle)
+void bounceBall(TImage *ball, TImage *paddle, TImage *background)
 {
 
         x = -x;
         if (ball->Top <= paddle->Height / 2) y -=2;
-        else y += 2;
-        if (y >= 100 || y <= -100)
+        else y += 4;
+        if (y >= 50 || y <= -50)
         {
                 // wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
                 // tzn. gdy gracz przydusi pileczke do gornej lub
                 // dolnej sciany
+                // lub pileczka zacznie sie toczyc po dolnej lub gornej scianie
                 if (ball->Left >= paddle->Width) ball->Left += 100;
                 else ball->Left -= 100;
         }
@@ -214,8 +215,7 @@ void showFullResult()
                 if (advantageGameEnabled) advantageGameEnabled = false;
 
                 if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
-                        + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
+                         "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
                         TMsgDlgButtons() << mbYes << mbNo, 0) == ID_YES)
                 {
                     playAgain();
@@ -310,9 +310,10 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         }
 
         // odbij pileczke od paletki
-        if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
-        if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
+        if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle, background);
+        if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle, background);
 
+        // na pozniej, dla przyszlego debugowania
         Label1->Caption = "x = " + IntToStr(x);
         Label2->Caption = "y = " + IntToStr(y);
 

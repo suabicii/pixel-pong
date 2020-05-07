@@ -90,17 +90,18 @@ void moveDown(TImage *paddle)
         if (paddle->Top + paddle->Height < Form1->background->Height - 10) paddle->Top += 10;
 }
 
-void bounceBall(TImage *ball, TImage *paddle)
+void bounceBall(TImage *ball, TImage *paddle, TImage *background)
 {
 
         x = -x;
         if (ball->Top <= paddle->Height / 2) y -=2;
-        else y += 2;
-        if (y >= 100 || y <= -100)
+        else y += 4;
+        if (y >= 50 || y <= -50)
         {
                 // wyrzuc pilke poza stol, gdy sie "zatnie" kompletnie
                 // tzn. gdy gracz przydusi pileczke do gornej lub
                 // dolnej sciany
+                // lub pileczka zacznie sie toczyc po dolnej lub gornej scianie
                 if (ball->Left >= paddle->Width) ball->Left += 100;
                 else ball->Left -= 100;
         }
@@ -214,8 +215,7 @@ void showFullResult()
                 if (advantageGameEnabled) advantageGameEnabled = false;
 
                 if(MessageDlg("KONIEC GRY! Wygra³ gracz " + whoWon() +
-                        "\nWynik: " + IntToStr(leftPlayerPoints) + " : " + IntToStr(rightPlayerPoints)
-                        + "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
+                         "\nCzy chcesz zagraæ jeszcze raz?", mtConfirmation,
                         TMsgDlgButtons() << mbYes << mbNo, 0) == ID_YES)
                 {
                     playAgain();
@@ -310,9 +310,10 @@ void __fastcall TForm1::moveBallTimer(TObject *Sender)
         }
 
         // odbij pileczke od paletki
-        if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle);
-        if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle);
+        if (collision(ball, leftPaddle)) bounceBall(ball, leftPaddle, background);
+        if (collision(ball, rightPaddle)) bounceBall(ball, rightPaddle, background);
 
+        //
         Label1->Caption = "x = " + IntToStr(x);
         Label2->Caption = "y = " + IntToStr(y);
 
@@ -368,6 +369,9 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
                     "Sterowanie: " + AnsiString("\n") +
                     "Gracz lewy: klawisze W, S" + AnsiString("\n") +
                     "Gracz prawy: strza³ka w górê, strza³ka w dó³" + AnsiString("\n\n") +
+                    "Gra koñczy siê, po uzyskaniu 6 punktów przez jednego z graczy " +
+                    "z wyj¹tkiem sytuacji, w której obaj gracze zdobêd¹ po 5 punktów." + AnsiString("\n") +
+                    "Wtedy aby wygraæ, nale¿y uzyskaæ prewagê 2-punktow¹" + AnsiString("\n\n") +
                     "Uwaga! Postaraj siê nie odbijaæ pi³eczki górn¹ lub doln¹ œcian¹" +
                     " paletki, gdy¿ mo¿e to poskuktowaæ utrat¹ punktu." + AnsiString("\n") +
                     "Chyba, ¿e zrobisz to w odpowiedni sposób, wówczas mo¿esz przyspieszyæ" +
